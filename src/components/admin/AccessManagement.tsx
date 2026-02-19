@@ -23,13 +23,13 @@ const AccessManagement = () => {
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-[var(--color-primary)]">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-64">
+                            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider w-64">
                                 Module / Permission
                             </th>
                             {roles.map(role => (
-                                <th key={role} className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th key={role} className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
                                     {role}
                                 </th>
                             ))}

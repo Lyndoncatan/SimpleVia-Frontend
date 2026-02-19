@@ -1,5 +1,5 @@
 
-import { Calendar, Clock, Download } from 'lucide-react';
+import { Calendar, Clock, Download, Search } from 'lucide-react';
 
 const ActivityLog = () => {
     const logs = [
@@ -15,6 +15,14 @@ const ActivityLog = () => {
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                 <h2 className="text-xl font-bold text-gray-800">Activity Logs</h2>
                 <div className="flex items-center gap-2">
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Search logs..."
+                            className="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
+                        />
+                        <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                    </div>
                     <div className="flex items-center gap-2 bg-white px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-600">
                         <Calendar size={16} />
                         <span>Today</span>
@@ -27,12 +35,12 @@ const ActivityLog = () => {
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-[var(--color-primary)]">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Time</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">User</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Action</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Details</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">

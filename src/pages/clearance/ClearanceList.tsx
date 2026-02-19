@@ -1,15 +1,35 @@
 
-import { Search, Eye, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Search, Eye, CheckCircle, XCircle, Clock, MoreVertical, Edit } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
 
 const ClearanceList = () => {
     const navigate = useNavigate();
+    const [activeMenu, setActiveMenu] = useState<number | null>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
 
     const clearances = [
         { id: 1, name: 'Dela Cruz, Juan', position: 'Admin Officer', purpose: 'Retirement', status: 'Pending', date: '2024-09-10' },
         { id: 2, name: 'Santos, Maria', position: 'Project Manager', purpose: 'Transfer', status: 'Approved', date: '2024-09-08' },
         { id: 3, name: 'Reyes, Jose', position: 'Tech Assistant', purpose: 'Resignation', status: 'Rejected', date: '2024-09-05' },
     ];
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setActiveMenu(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const toggleMenu = (id: number) => {
+        setActiveMenu(activeMenu === id ? null : id);
+    };
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -39,7 +59,7 @@ const ClearanceList = () => {
                 </button>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-visible">
                 <div className="p-4 border-b border-gray-200 flex justify-between items-center">
                     <div className="flex gap-2">
                         <button className="px-3 py-1 text-sm font-medium bg-gray-100 rounded-lg text-gray-700 hover:bg-gray-200">All</button>
@@ -58,18 +78,18 @@ const ClearanceList = () => {
                     </div>
                 </div>
                 <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-[#107d38] text-white">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Employee
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Purpose
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Date Filed
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Status
                             </th>
                             <th scope="col" className="relative px-6 py-3">
@@ -104,12 +124,37 @@ const ClearanceList = () => {
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button
-                                        onClick={() => navigate('/dashboard/clearance/1')}
-                                        className="text-[var(--color-primary)] hover:text-green-900"
-                                    >
-                                        <Eye size={18} />
-                                    </button>
+                                    <div className="flex justify-end gap-2 relative">
+                                        <button
+                                            onClick={() => navigate('/dashboard/clearance/1')}
+                                            className="text-[var(--color-primary)] hover:text-green-900"
+                                            title="View Details"
+                                        >
+                                            <Eye size={18} />
+                                        </button>
+                                        <div className="relative">
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); toggleMenu(item.id); }}
+                                                className="text-gray-400 hover:text-gray-600"
+                                            >
+                                                <MoreVertical size={18} />
+                                            </button>
+
+                                            {activeMenu === item.id && (
+                                                <div
+                                                    ref={menuRef}
+                                                    className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-50 border border-gray-100 py-1 text-left"
+                                                >
+                                                    <button
+                                                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                                                        onClick={() => setActiveMenu(null)}
+                                                    >
+                                                        <Edit size={16} /> Edit
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

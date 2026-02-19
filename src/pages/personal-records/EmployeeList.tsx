@@ -1,9 +1,12 @@
 
-import { Search, Filter, MoreVertical, Eye, Download } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Search, Filter, MoreVertical, Eye, Download, Edit, EyeOff, Ban } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const EmployeeList = () => {
     const navigate = useNavigate();
+    const [activeMenu, setActiveMenu] = useState<number | null>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
 
     const employees = [
         { id: 1, name: 'Dela Cruz, Juan', position: 'Administrative Officer', type: 'Regular', region: 'NCR' },
@@ -12,6 +15,23 @@ const EmployeeList = () => {
         { id: 4, name: 'Garcia, Ana', position: 'Administrative Aide', type: 'Regular', region: 'Region 7' },
         { id: 5, name: 'Bautista, Pedro', position: 'Driver', type: 'Contract of Service', region: 'NCR' },
     ];
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setActiveMenu(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const toggleMenu = (id: number) => {
+        setActiveMenu(activeMenu === id ? null : id);
+    };
 
     return (
         <div className="space-y-6">
@@ -79,20 +99,20 @@ const EmployeeList = () => {
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-visible">
                 <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-[#107d38] text-white">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Name
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Position
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Type
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Region
                             </th>
                             <th scope="col" className="relative px-6 py-3">
@@ -127,16 +147,48 @@ const EmployeeList = () => {
                                     {employee.region}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div className="flex justify-end gap-2">
+                                    <div className="flex justify-end gap-2 relative">
                                         <button
                                             onClick={() => navigate('/dashboard/employee/1')}
                                             className="text-[var(--color-primary)] hover:text-green-900"
+                                            title="View Details"
                                         >
                                             <Eye size={20} />
                                         </button>
-                                        <button className="text-gray-400 hover:text-gray-600">
-                                            <MoreVertical size={20} />
-                                        </button>
+                                        <div className="relative">
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); toggleMenu(employee.id); }}
+                                                className="text-gray-400 hover:text-gray-600"
+                                            >
+                                                <MoreVertical size={20} />
+                                            </button>
+
+                                            {activeMenu === employee.id && (
+                                                <div
+                                                    ref={menuRef}
+                                                    className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-100 py-1"
+                                                >
+                                                    <button
+                                                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                                                        onClick={() => setActiveMenu(null)}
+                                                    >
+                                                        <Edit size={16} /> Edit
+                                                    </button>
+                                                    <button
+                                                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                                                        onClick={() => setActiveMenu(null)}
+                                                    >
+                                                        <EyeOff size={16} /> Hide
+                                                    </button>
+                                                    <button
+                                                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                                                        onClick={() => setActiveMenu(null)}
+                                                    >
+                                                        <Ban size={16} /> Block
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

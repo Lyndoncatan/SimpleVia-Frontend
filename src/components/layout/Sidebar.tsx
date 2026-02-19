@@ -22,9 +22,12 @@ const Sidebar = () => {
 
     return (
         <div className="w-64 bg-white h-screen flex flex-col border-r border-gray-200 shadow-sm fixed left-0 top-0">
-            <div className="p-6 flex items-center justify-center border-b border-gray-100 gap-2">
-                <img src={logo} alt="SimpleVia Logo" className="w-8 h-8" />
-                <div className="text-xl font-bold text-[var(--color-primary)]">SimpleVia</div>
+            <div className="p-6 flex flex-col items-center justify-center border-b border-gray-100">
+                <div className="flex items-center gap-2">
+                    <img src={logo} alt="SimpleVia Logo" className="w-8 h-8" />
+                    <div className="text-xl font-bold text-[var(--color-primary)]">SimpleVia</div>
+                </div>
+                <div className="text-xs text-gray-500 font-medium tracking-wide">Technologies Inc.</div>
             </div>
 
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto">

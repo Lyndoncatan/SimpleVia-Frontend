@@ -5,7 +5,8 @@ const TopBar = () => {
     return (
         <header className="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-6 sticky top-0 z-10">
             {/* Left: Search or Title */}
-            <div className="flex items-center gap-4 w-1/3">
+            <div className="flex items-center gap-4 w-1/2">
+                <span className="text-2xl font-extrabold text-[var(--color-primary)] tracking-tight whitespace-nowrap">HRIS SYSTEM</span>
                 <div className="relative w-full max-w-md">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <Search className="h-5 w-5 text-gray-400" />

@@ -1,7 +1,11 @@
-import { Search, Filter, Calendar, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
-
+import { Search, Filter, Calendar, ChevronLeft, ChevronRight, Eye, MoreVertical, Edit, EyeOff, Ban } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AttendanceTable = () => {
+    const navigate = useNavigate();
+    const [activeMenu, setActiveMenu] = useState<number | null>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
 
     const employees = [
         { id: 1, name: 'Dela Cruz, Juan', position: 'Admin Officer', status: 'Present', timeIn: '07:55 AM', timeOut: '05:01 PM' },
@@ -10,6 +14,23 @@ const AttendanceTable = () => {
         { id: 4, name: 'Garcia, Ana', position: 'Admin Aide', status: 'Present', timeIn: '07:45 AM', timeOut: '05:15 PM' },
         { id: 5, name: 'Bautista, Pedro', position: 'Driver', status: 'Present', timeIn: '06:00 AM', timeOut: '03:00 PM' },
     ];
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setActiveMenu(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const toggleMenu = (id: number) => {
+        setActiveMenu(activeMenu === id ? null : id);
+    };
 
     return (
         <div className="space-y-6">
@@ -48,7 +69,7 @@ const AttendanceTable = () => {
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-visible">
                 <div className="p-4 border-b border-gray-200 flex justify-between items-center">
                     <h3 className="font-bold text-gray-700">Daily Attendance Log</h3>
                     <div className="flex gap-2">
@@ -66,18 +87,18 @@ const AttendanceTable = () => {
                     </div>
                 </div>
                 <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-[#107d38] text-white">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Employee
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Time In
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Time Out
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                 Status
                             </th>
                             <th scope="col" className="relative px-6 py-3">
@@ -115,9 +136,49 @@ const AttendanceTable = () => {
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button className="text-[var(--color-primary)] hover:text-green-900">
-                                        <Eye size={18} />
-                                    </button>
+                                    <div className="flex justify-end gap-2 relative">
+                                        <button
+                                            onClick={() => navigate(`/dashboard/employee/${employee.id}`)}
+                                            className="text-[var(--color-primary)] hover:text-green-900"
+                                            title="View Details"
+                                        >
+                                            <Eye size={18} />
+                                        </button>
+                                        <div className="relative">
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); toggleMenu(employee.id); }}
+                                                className="text-gray-400 hover:text-gray-600"
+                                            >
+                                                <MoreVertical size={18} />
+                                            </button>
+
+                                            {activeMenu === employee.id && (
+                                                <div
+                                                    ref={menuRef}
+                                                    className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-100 py-1 text-left"
+                                                >
+                                                    <button
+                                                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                                                        onClick={() => setActiveMenu(null)}
+                                                    >
+                                                        <Edit size={16} /> Edit
+                                                    </button>
+                                                    <button
+                                                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                                                        onClick={() => setActiveMenu(null)}
+                                                    >
+                                                        <EyeOff size={16} /> Hide
+                                                    </button>
+                                                    <button
+                                                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                                                        onClick={() => setActiveMenu(null)}
+                                                    >
+                                                        <Ban size={16} /> Block
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
