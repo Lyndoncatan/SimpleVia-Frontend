@@ -1,4 +1,4 @@
-import { Search, Filter, Calendar, ChevronLeft, ChevronRight, Eye, MoreVertical, Edit, EyeOff, Ban } from 'lucide-react';
+import { Search, Filter, Calendar, ChevronLeft, ChevronRight, MoreVertical, Edit, EyeOff, Ban } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -137,13 +137,7 @@ const AttendanceTable = () => {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div className="flex justify-end gap-2 relative">
-                                        <button
-                                            onClick={() => navigate(`/dashboard/employee/${employee.id}`)}
-                                            className="text-[var(--color-primary)] hover:text-green-900"
-                                            title="View Details"
-                                        >
-                                            <Eye size={18} />
-                                        </button>
+                                        {/* Eye button removed per request */}
                                         <div className="relative">
                                             <button
                                                 onClick={(e) => { e.stopPropagation(); toggleMenu(employee.id); }}

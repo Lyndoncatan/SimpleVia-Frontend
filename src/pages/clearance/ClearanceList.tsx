@@ -8,6 +8,8 @@ const ClearanceList = () => {
     const [activeMenu, setActiveMenu] = useState<number | null>(null);
     const menuRef = useRef<HTMLDivElement>(null);
 
+    const [filter, setFilter] = useState<'All' | 'Pending' | 'Approved'>('All');
+
     const clearances = [
         { id: 1, name: 'Dela Cruz, Juan', position: 'Admin Officer', purpose: 'Retirement', status: 'Pending', date: '2024-09-10' },
         { id: 2, name: 'Santos, Maria', position: 'Project Manager', purpose: 'Transfer', status: 'Approved', date: '2024-09-08' },
@@ -62,9 +64,18 @@ const ClearanceList = () => {
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-visible">
                 <div className="p-4 border-b border-gray-200 flex justify-between items-center">
                     <div className="flex gap-2">
-                        <button className="px-3 py-1 text-sm font-medium bg-gray-100 rounded-lg text-gray-700 hover:bg-gray-200">All</button>
-                        <button className="px-3 py-1 text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-lg">Pending</button>
-                        <button className="px-3 py-1 text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-lg">Approved</button>
+                        <button
+                            onClick={() => setFilter('All')}
+                            className={`px-3 py-1 text-sm font-medium rounded-lg ${filter === 'All' ? 'bg-[var(--color-primary)] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                        >All</button>
+                        <button
+                            onClick={() => setFilter('Pending')}
+                            className={`px-3 py-1 text-sm font-medium rounded-lg ${filter === 'Pending' ? 'bg-yellow-500 text-white' : 'text-gray-500 hover:bg-gray-50'}`}
+                        >Pending</button>
+                        <button
+                            onClick={() => setFilter('Approved')}
+                            className={`px-3 py-1 text-sm font-medium rounded-lg ${filter === 'Approved' ? 'bg-green-600 text-white' : 'text-gray-500 hover:bg-gray-50'}`}
+                        >Approved</button>
                     </div>
                     <div className="flex gap-2">
                         <div className="relative">
@@ -98,7 +109,14 @@ const ClearanceList = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {clearances.map((item) => (
+                        {clearances
+                            .filter((item) => {
+                                if (filter === 'All') return true;
+                                if (filter === 'Pending') return item.status === 'Pending';
+                                if (filter === 'Approved') return item.status === 'Approved';
+                                return true;
+                            })
+                            .map((item) => (
                             <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <div className="flex items-center">
