@@ -7,9 +7,10 @@ interface HeadcountWidgetProps {
     subtitle?: string;
     icon?: 'users' | 'check';
     color?: string;
+    onView?: () => void;
 }
 
-const HeadcountWidget = ({ title, count, subtitle, icon = 'users', color = 'text-[var(--color-primary)]' }: HeadcountWidgetProps) => {
+const HeadcountWidget = ({ title, count, subtitle, icon = 'users', color = 'text-[var(--color-primary)]', onView }: HeadcountWidgetProps) => {
     return (
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between h-full">
             <div className="flex justify-between items-start">
@@ -30,6 +31,14 @@ const HeadcountWidget = ({ title, count, subtitle, icon = 'users', color = 'text
                     {subtitle}
                 </div>
             )}
+            <div className="mt-4 flex justify-end">
+                <button
+                    onClick={onView}
+                    className="text-sm font-semibold text-[var(--color-primary)] hover:underline"
+                >
+                    View
+                </button>
+            </div>
         </div>
     );
 };

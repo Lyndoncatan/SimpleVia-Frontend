@@ -37,7 +37,7 @@ const Login: FC = () => {
                 {/* Right Side - Login Form */}
                 <div className="flex-1 w-full max-w-md">
                     <div className="mb-8">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome!</h2>
+                        <h2 className="text-2xl md:text-3xl font-bold text-orange-500 mb-2">Welcome!</h2>
                         <h3 className="text-xl font-medium text-white">HR Management Information System</h3>
                     </div>
 
@@ -87,9 +87,9 @@ const Login: FC = () => {
                         </div>
 
                         <div className="flex items-center justify-end">
-                            <a href="#" className="text-sm font-medium text-gray-800 hover:text-white transition-colors">
-                                Forgot Password?
-                            </a>
+                            <a href="#" className="text-sm font-medium text-green-500 hover:text-green-700 transition-colors">
+                                    Forgot Password?
+                                </a>
                         </div>
                     </form>
                 </div>
