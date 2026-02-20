@@ -28,8 +28,13 @@ export const options = {
     maintainAspectRatio: false,
     plugins: {
         legend: {
-            position: 'top' as const,
+            // switch to bottom on narrow screens for better space usage
+            position: (ctx: any) => (ctx?.chart?.width && ctx.chart.width < 480 ? 'bottom' : 'top'),
             align: 'end' as const,
+            labels: {
+                boxWidth: 12,
+                padding: 8,
+            }
         },
         title: {
             display: true,
@@ -38,7 +43,8 @@ export const options = {
             align: 'start' as const,
             color: '#333',
             font: {
-                size: 16,
+                // smaller font on narrow screens
+                size: (ctx: any) => (ctx?.chart?.width && ctx.chart.width < 400 ? 12 : 16),
                 weight: 'bold' as const,
             },
         },
@@ -80,5 +86,10 @@ export const data = {
 };
 
 export function TurnoverChart() {
-    return <div className="h-full w-full"><Line options={options} data={data} /></div>;
+    // responsive height: smaller on mobile, larger on desktop
+    return (
+        <div className="w-full h-48 sm:h-56 md:h-64 lg:h-72">
+            <Line options={options} data={data} />
+        </div>
+    );
 }
