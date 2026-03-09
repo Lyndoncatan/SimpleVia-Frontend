@@ -27,7 +27,7 @@ const Sidebar = ({ isMobileOpen, onClose, collapsed = false, onToggleCollapse }:
 
     const hrNav = [
         { icon: Users, label: 'Employee Management', path: '/dashboard/personal-records' },
-        { icon: Clock, label: 'Time & Attendance', path: '/dashboard/attendance' },
+        { icon: Clock, label: 'Attendance Log', path: '/dashboard/attendance' },
         { icon: FileText, label: 'Leave Management', path: '/dashboard/leave' },
         { icon: DollarSign, label: 'Payroll', path: '/dashboard/payroll' },
         { icon: Shield, label: 'Government Compliance', path: '/dashboard/compliance' },
@@ -35,7 +35,7 @@ const Sidebar = ({ isMobileOpen, onClose, collapsed = false, onToggleCollapse }:
 
     const userNav = [
         { icon: Newspaper, label: 'Company News', path: '/dashboard/company-news' },
-        { icon: Clock, label: 'My Attendance', path: '/dashboard/my-attendance' },
+        { icon: Clock, label: 'Attendance Log', path: '/dashboard/my-attendance' },
         { icon: FileText, label: 'My Leaves', path: '/dashboard/my-leave' },
         { icon: DollarSign, label: 'My Pay Slips', path: '/dashboard/my-payslips' },
         { icon: BarChart3, label: 'My Performance', path: '/dashboard/my-performance' },

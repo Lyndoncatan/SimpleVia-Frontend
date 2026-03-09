@@ -34,9 +34,7 @@ const Layout = () => {
                 <TopBar onMenuClick={() => setIsMobileMenuOpen(true)} />
 
                 <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6">
-                    <div className="container mx-auto max-w-7xl">
-                        <Outlet />
-                    </div>
+                    <Outlet />
                 </main>
             </div>
         </div>
